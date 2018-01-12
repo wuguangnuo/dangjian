@@ -37,7 +37,7 @@ pre {
 			<p>新添加方类/法：</p>
 <pre><code>
 //安全验证，转义防注入
-function _RunMagicQuotes(&$svar)
+function _RunMagicQuotes(&amp;$svar)
 
 //首页
 private function myde_home()
@@ -61,7 +61,7 @@ $search .= " WHERE username LIKE '%".strip_tags($key)."%' OR name LIKE '%".strip
 //分页设定
 $showrow = 4;//一页显示的行数
 $curpage = empty($_GET['page']) ? 1 : $_GET['page'];//当前的页,还应该处理非数字的情况
-$url = "?action=user&page={page}";//分页地址，如果有检索条件 ="?page={page}&q=".$_GET['q']
+$url = "?action=user&amp;page={page}";//分页地址，如果有检索条件 ="?page={page}&amp;q=".$_GET['q']
 
 //分页 Pagination
 if($total > $showrow) {//总记录数大于每页显示数，显示分页
@@ -89,7 +89,7 @@ if($do==""){
 	$date1 = empty($_GET['date1']) ? (empty($_POST['date1']) ? "1000-01-01" : _RunMagicQuotes($_POST['date1'])) : _RunMagicQuotes($_GET['date1']);
 	$date2 = empty($_GET['date2']) ? (empty($_POST['date2']) ? "9999-12-31" : _RunMagicQuotes($_POST['date2'])) : _RunMagicQuotes($_GET['date2']);
 
-	if(empty($_POST['date1']) && empty($_POST['date2']) && empty($_GET['date1']) && empty($_GET['date2'])){//不填写则默认获取近一年数据
+	if(empty($_POST['date1']) &amp;&amp; empty($_POST['date2']) &amp;&amp; empty($_GET['date1']) &amp;&amp; empty($_GET['date2'])){//不填写则默认获取近一年数据
 		$date1 = date("Y-m-d",strtotime("-1 year"));
 		$date2 = date("Y-m-d");
 	}
@@ -108,11 +108,11 @@ if($do==""){
 	//分页设定
 	$showrow = 4;//一页显示的行数 (如需开放用户调整权限则更改此处)
 	$curpage = empty($_GET['page']) ? 1 : $_GET['page'];//当前的页,还应该处理非数字的情况
-	$url = "?action=dangfei&page={page}&key={$key}&date1={$date1}&date2={$date2}&user={$user}";//分页地址，检索key、date1、date2、user
+	$url = "?action=dangfei&amp;page={page}&amp;key={$key}&amp;date1={$date1}&amp;date2={$date2}&amp;user={$user}";//分页地址，检索key、date1、date2、user
 	$sql_u = "SELECT user_id,username,name FROM dj_users WHERE 1=1 {$shaixuan} ORDER BY id ASC";
 	$db->query($sql_u);
 	$total = $db->recordCount();
-	if(!empty($_GET['page']) && $total != 0 && $curpage > ceil($total / $showrow))$curpage = ceil($total_rows / $showrow);//当前页数大于最后页数，取最后一页
+	if(!empty($_GET['page']) &amp;&amp; $total != 0 &amp;&amp; $curpage > ceil($total / $showrow))$curpage = ceil($total_rows / $showrow);//当前页数大于最后页数，取最后一页
 	$sql_u .= " LIMIT ".($curpage - 1) * $showrow .",{$showrow};";//添加限制
 	$db->query($sql_u);
 	$total_u = $db->recordCount();
