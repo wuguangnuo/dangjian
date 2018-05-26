@@ -1,0 +1,168 @@
+body {
+	background-color: #E0E0E0;
+	margin: 0px;
+}
+.list-right {
+	background-image: url(images/index_2.gif);
+	background-repeat: no-repeat;
+	background-position: right top;}
+
+.pop_banner_r {
+	background-image: url();
+	background-position: right;
+	background-repeat: no-repeat;}
+/*--信息显示区域背景表格，加在td标记里--*/
+.main_tab_td {
+	border: 1px solid #E1E1E1;
+	background-color: #f9f7fd;
+	padding: 10px;
+	width: 95%;}
+
+.l_zt_tit {
+	font-size: 10.5pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	filter: DropShadow(Color=#cb652d, OffX=1, OffY=1, Positive=true);}
+.l_zt_tit2 {
+	font-size: 9pt;
+	font-weight: bold;
+	color: #000000;
+	filter: DropShadow(Color=#f6dcaa, OffX=1, OffY=1, Positive=true);}
+.leftbg {
+	background-color: #e0e0e0;
+	background-image: url(images/bg_left.gif);
+	background-repeat: repeat-y;
+	background-position: right;}
+.rightbg {
+	background-color: #e0e0e0;
+	background-image: url(images/bg_right.gif);
+	background-repeat: repeat-y;}
+.mail-border {
+	border: 1px solid #e0e0e0;}
+.mailborder2 {
+	border: 1px dashed #FFFFFF;
+	background-image: url(images/mail_bg.gif);}
+
+.l_bg {
+	background-image: url();
+	background-repeat: repeat;}
+.zt_tit {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #CB3401;
+	filter: DropShadow(Color=#e1e1e1, OffX=1, OffY=1, Positive=true);}
+
+
+a:link {
+	font-size: 9pt;
+	text-decoration: none; 
+	color:#000000
+;}
+a:active {
+    font-size: 9pt;
+	text-decoration: none; 
+	color:#000000
+;}
+a:visited {
+	font-size: 9pt;
+	text-decoration: none; 
+	color:#000000
+;}
+a:hover {
+	font-size: 9pt;
+	text-decoration: underline; 
+	color: #FF0000
+	;}
+.greyfont {
+	color: #7F7F7F;}
+input {
+	background-color: #f8f8f8;
+	border: 1px solid #cbcbcb;}
+
+a.barlink:link {
+	font-size: 9pt;
+	text-decoration: none;}
+a.barlink:active {
+	font-size: 9pt;
+	text-decoration: none;}
+a.barlink:visited {
+	font-size: 9pt;
+	text-decoration: none;}
+a.barlink:hover {
+	font-size: 9pt;
+	text-decoration: underline; 
+	color: #FF9900
+;}
+a.whlink:link {
+	font-size: 9pt;
+	text-decoration: none;
+	color: #FFFFFF;}
+a.whlink:active {
+	font-size: 9pt;
+	text-decoration: none; 
+	color: #FFFFFF;}
+a.whlink:visited {
+	font-size: 9pt;
+	text-decoration: none; 
+	color: #FFFFFF;}
+a.whlink:hover {
+	font-size: 9pt;
+	text-decoration: underline; 
+	color: #FFFF00
+;}
+.top_tit {
+	font-family: "华文行楷";
+	font-size: 24pt;
+	color: #FFFFFF;
+	filter: Glow(Color=#e68026, Strength=strength);}.pop_tit {
+	font-size: 14pt;
+	font-weight: bold;}
+.content {
+	font-size: 10.5pt;}
+.top_tit2 {
+	font-family: "华文新魏";
+	font-size: 18pt;
+	color: #FFFFFF;
+	filter: Glow(Color=#4b6fa0, Strength=strength);}
+.redfont {
+	color: #c51c00;
+	font-size: 9pt;}
+
+table {
+	font-size: 9pt;}
+.linebg {
+	background-image: url(images/line_bg.gif);
+	background-repeat: repeat-y;}
+.new_bg2 {
+	background-image: url(images/news_bg2.gif);
+	background-position: bottom;
+	background-repeat: no-repeat;}
+.photo_kuang {
+	background-image: url(images/kuang_bg.gif);
+	background-position: right top;
+	padding-top: 12px;
+	padding-right: 22px;}
+.left_bg1 {
+	background-image: url(images/left_bg1.gif);
+	background-repeat: repeat-x;
+	background-position: bottom;}
+.pop_bg {
+	background-image: url(images/pop_bg.gif);
+	background-repeat: repeat-x;
+	background-position: bottom;}
+.toolsinput {
+	font-size: 9pt;
+	width: 80px;
+	background-color:#ffffff;
+	border: 1px solid #666666;}
+.inputclass {
+	font-size: 9pt;
+	line-height: 26px;
+	width: 150px;}
+.searchtitleinput {
+	width:280px;}
+.left_down {
+	background-image: url();
+	background-repeat: repeat-x;
+	background-position: bottom;
+}
