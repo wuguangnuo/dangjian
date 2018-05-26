@@ -1,9 +1,14 @@
 <?php
 //====================================================
 //		FileName: index.php
-//		Summary:  程序入口文件
+//		Summary : 程序入口文件
 //====================================================
 header("Content-type:text/html;charset=utf-8");
+
+if(!is_file("lib/cfg.class.php")){//安装软件
+	@header("location:install.php");
+}
+
 session_start();
 error_reporting(0);
 
@@ -13,17 +18,14 @@ require_once("lib/cfg.class.php");			//配置类
 require_once("lib/mysql.class.php");		//数据类
 require_once("lib/json.class.php");			//JSON类
 require_once("lib/func.class.php");			//核心类
-require_once("lib/rabc.class.php");			//查询类
+require_once("lib/rabc.class.php");			//权限类
 require_once("lib/image.class.php");		//图片类
 require_once("lib/page.class.php");			//分页类
+require_once("lib/smtp.class.php");			//邮件类
 
 //操作值
 $action = empty($_GET['action']) ? "" : trim($_GET['action']);			//get action值
 $do = empty($_GET['do']) ? "" : trim($_GET['do']);						//get do值
-/* 此处集中控制，供action调用
-$id = empty($_GET['id']) ? "" : intval($_GET['id']);					//get id值
-$cuserid = empty($_GET['userid']) ? "" : intval($_GET['userid']);		//get userid值
-*/
 
 //读取用户数组
 $sql_user = "SELECT id,username FROM dj_users;";
@@ -36,19 +38,19 @@ foreach($user_arr as $key=>$val){
 //执行页面
 switch($action){
 	case "":
-		include("action/action.index.php");		//首页`
+		include("action/action.index.php");		//首页
 		break;
 		
 	case "study":
 		include("action/action.study.php");		//在线学习
 		break;
 		
-	case "manage":
-		include("action/action.manage.php");	//用户管理
+	case "dangwu":
+		include("action/action.dangwu.php");	//党务管理
 		break;
 		
-	case "dangfei":
-		include("action/action.dangfei.php");	//党费管理
+	case "manage":
+		include("action/action.manage.php");	//管理中心
 		break;
 		
 	case "user":
