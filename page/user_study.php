@@ -1,30 +1,30 @@
 <?php
 	include('head.php');
+	include('userNav.php');
 ?>
 
 <script>
-$("#navbar_study").addClass("active");
+$("#user_study").addClass("active");
 
 $(function(){
-	$("#Modal_detail").on("show.bs.modal",function(){
+	$("#myModal,#Modal_detail").on("show.bs.modal",function(){
 		var $this = $(this);
 		var $modal_dialog = $this.find(".modal-dialog");
 		$this.css("display","block");
 		$modal_dialog.css({"margin-top":Math.max(0,($(window).height()-$modal_dialog.height())/2)});
 	});
 });
-
 </script>
 
 <div class="row">
 	<div class="col-md-12 column">
 	<div class="panel panel-default">
 	<div class="panel-heading">
-		<i class="fa fa-book" aria-hidden="true"></i>&nbsp;在线学习
+		<i class="fa fa-book" aria-hidden="true"></i>&nbsp;个人中心 -> 学习情况
 	</div>
 	<div class="panel-body">
 
-<form class="form-inline" action="?action=study" method="post" role="form">
+<form class="form-inline" action="?action=user&do=user_study" method="post" role="form">
 	<div class="form-group">
 		<label for="key">查询</label>
 		<input type="text" name="key" class="form-control input-sm" value="<?php echo empty($_GET['key']) ? $_POST['key'] : $_GET['key']; ?>" placeholder="请输入课程ID或课程名" />&nbsp;&nbsp;&nbsp;
@@ -87,15 +87,13 @@ $(function(){
 				echo "<td>" . cut_str($row['name'], 20) ."</td>";
 				echo "<td>" . checkEmpty($row['extension']) ."</td>";
 				echo "<td>" . checkEmpty($row['score']) ."</td>";
-				echo "<td style=\"display:none;\">" . checkEmpty($row['link']) ."</td>";
 				echo "<td>" . $row['created_at'] ."</td>";
 				echo "<td>";
-				if($row['judge'] == "0")
-					echo "未完成</td><td><button onclick=\"modalShow(this);\" role=\"button\" class=\"btn btn-xs btn-info\" data-toggle=\"modal\">查看详情</button>
-							<button onclick=\"add_study(this)\" class=\"btn btn-xs btn-primary\">进入课程</button>";
+				if($row['judge'] == "0"){
+					echo "未完成</td><td><button onclick=\"modalShow(this);\" role=\"button\" class=\"btn btn-xs btn-info\" data-toggle=\"modal\">查看详情</button>";
+				}
 				else{
-					echo "已完成!!!</td><td><button onclick=\"modalShow(this);\" role=\"button\" class=\"btn btn-xs btn-info\" data-toggle=\"modal\">查看详情</button>
-							<button onclick=\"again_study(this)\" class=\"btn btn-xs btn-primary\">再次学习</button>";
+					echo "已完成!!!</td><td><button onclick=\"modalShow(this);\" role=\"button\" class=\"btn btn-xs btn-info\" data-toggle=\"modal\">查看详情</button>";
 				}
 				echo "</td></tr>\n";
 				}
@@ -117,8 +115,8 @@ $(function(){
 		<div class="btn-group">
 			<button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown">导出此表<span class="caret"></span></button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="lib/excelDL.class.php?type=studyXls<?php echo "&username=" . $_SESSION['username'] . "&sql=" . $sqlExcel; ?>">生成xls格式文件</a></li>
-				<li><a href="lib/excelDL.class.php?type=studyCsv<?php echo "&username=" . $_SESSION['username'] . "&sql=" . $sqlExcel; ?>">生成csv格式文件</a></li>
+				<li><a href="lib/excelDL.class.php?type=user_studyXls<?php echo "&username=" . $_SESSION['username'] . "&sql=" . $sqlExcel; ?>">生成xls格式文件</a></li>
+				<li><a href="lib/excelDL.class.php?type=user_studyCsv<?php echo "&username=" . $_SESSION['username'] . "&sql=" . $sqlExcel; ?>">生成csv格式文件</a></li>
 			</ul>
 		</div>
 		
@@ -195,6 +193,7 @@ $(function(){
 </div>
 
 <script>
+
 //查看详情
 function modalShow(obj){
 	var tds = $(obj).parent().parent().find("td");
@@ -226,7 +225,7 @@ function modalShow(obj){
 			$("#detail_link").val(data.link);
 			$("#detail_created_at").val(data.created_at);
 			$("#detail_mark").val(data.mark);
-			$("#detail_done").val(tds.eq(6).text());
+			$("#detail_done").val(tds.eq(5).text());
 		},
 		error: function(){
 			//失败，请稍后重试
@@ -235,33 +234,6 @@ function modalShow(obj){
 	});
 	
 	$("#Modal_detail").modal("show");
-}
-
-//进入课程
-function add_study(obj){
-	var tds = $(obj).parent().parent().find("td");
-	var lessonid = tds.eq(0).text();
-	var user_id = "<?php echo $_SESSION['user_id']; ?>";
-	$.ajax({
-		url:"?action=study&do=add_study",
-		data:{
-			lessonid:lessonid,
-			user_id:user_id
-			},
-		type:"POST",
-		dataType:"TEXT",
-		success: function(data){
-				window.open(tds.eq(4).text());
-			}
-	});
-}
-
-//再次学习
-function again_study(obj){
-	var tds = $(obj).parent().parent().find("td");
-	console.log("AGAIN with: lessonid=" + tds.eq(0).text());
-	var lessonid = tds.eq(0).text();
-	window.open(tds.eq(4).text());
 }
 
 </script>

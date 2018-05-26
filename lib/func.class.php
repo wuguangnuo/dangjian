@@ -13,15 +13,15 @@ $db	=new mysql($cfg["dbhost"],$cfg["dbuser"],$cfg["dbpass"],$cfg["dbname"]);
 
 //提示信息
 $lang_cn = array(
-	"rabc_error"		=>"<script>alert(\"权限不足,非法操作!\");window.location=\"index.php\";</script>",
+	"rabc_error"		=>"<script>alert('权限不足,非法操作!');window.location='index.php';</script>",
 	"rabc_is_repeat"	=>"<script language=javascript>alert('对不起,该用户已存在！');history.back();</script>",
 	"rabc_error_oldPwd"	=>"<script language=javascript>alert('原始密码错误！');history.back();</script>",
 	"rabc_error_Pwd2"	=>"<script language=javascript>alert('两次密码不一致！');history.back();</script>",
-	"rabc_is_login"		=>"<script>window.location=\"index.php?action=user&do=login\";</script>",
-	"rabc_login_ok"		=>"<script>window.location=\"index.php\";</script>",
-	"rabc_login_error"	=>"<script>alert(\"用户密码错误!\");window.location=\"index.php?action=user&do=login\";</script>",
-	"rabc_logout"		=>"<script>alert(\"安全退出!\");window.location=\"index.php?action=user&do=login\";</script>",
-	"validate"			=>"<script>alert(\"内容不能为空,请填全内容!\");history.back(-1);</script>"
+	"rabc_is_login"		=>"<script>window.location='index.php?action=user&do=login';</script>",
+	"rabc_login_ok"		=>"<script>window.location='index.php';</script>",
+	"rabc_login_error"	=>"<script>alert('用户密码错误!');window.location='index.php?action=user&do=login';</script>",
+	"rabc_logout"		=>"<script>alert('安全退出!');window.location='index.php?action=user&do=login';</script>",
+	"validate"			=>"<script>alert('内容不能为空,请填全内容!');history.back(-1);</script>"
 );
 
 //权限页面
@@ -164,6 +164,14 @@ function checkEmpty($checkempty){
 		return "未填写";
 	else
 		return $checkempty;
+}
+
+//名字过长截断
+function cut_str($str, $len){
+	if(mb_strlen($str, 'utf-8') > $len){
+		$str = mb_substr($str, 0, $len, 'utf-8')."...";
+	}
+	return $str;
 }
 
 ?>

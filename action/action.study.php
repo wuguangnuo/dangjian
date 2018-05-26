@@ -33,7 +33,19 @@ if($do==""){
 	$showrow = 4;//一页显示的行数
 	$curpage = empty($_GET['page']) ? 1 : $_GET['page'];//当前的页,还应该处理非数字的情况
 	$url = "?action=study&page={page}&key={$key}&date1={$date1}&date2={$date2}&check={$check}";//分页地址，检索key、date1、date2、check
-		
+	
+	//计算学分
+	$sqlScore = "SELECT T1.*, SUM(IF((T1.id = T2.lessonid) & (user_id = '{$user_id}'), 1, 0)) AS judge FROM dj_lesson T1, (SELECT DISTINCT user_id, lessonid FROM dj_study) T2 GROUP BY T1.id";
+	$scoreA = 0;//总分
+	$scoreB = 0;//已修分
+	$db->query($sqlScore);
+	$listScore = $db->fetchAll();
+	foreach($listScore as &$row){
+		$scoreA += $row['score'];
+		if($row['judge'] != "0")
+			$scoreB += $row['score'];
+	}
+	
 	$sql = "SELECT T1.*, SUM(IF((T1.id = T2.lessonid) & (user_id = '{$user_id}'), 1, 0)) AS judge 
 			  FROM dj_lesson T1, 
 				   (SELECT DISTINCT user_id, lessonid 
@@ -41,6 +53,8 @@ if($do==""){
 			 WHERE 1 = 1 {$search} 
 			 GROUP BY T1.id 
 			 ORDER BY T1.id DESC";
+	$sqlExcel = "SELECT T1.*, SUM(IF((T1.id = T2.lessonid) %26 (user_id = '{$user_id}'), 1, 0)) AS judge FROM dj_lesson T1,(SELECT DISTINCT user_id, lessonid FROM dj_study) T2 WHERE 1 = 1 {$search} GROUP BY T1.id ORDER BY T1.id DESC";//表格下载专用
+
 	$db->query($sql);
 	$total = $db->recordCount();
 	if(!empty($_GET['page']) && $total != 0 && $curpage > ceil($total / $showrow))$curpage = ceil($total_rows / $showrow);//当前页数大于最后页数，取最后一页，向上取整
@@ -52,21 +66,28 @@ if($do==""){
 	exit;
 }
 
-//添加课程
-elseif($do=="add_lesson"){
-	If_rabc($action,$do);//检测权限
-	is_admin($action,$do);
-
-	//参数安全过滤
-	$name		=	_RunMagicQuotes($_POST['name']);
-	$detail		=	_RunMagicQuotes($_POST['detail']);
-	$created_at	=	date("Y-m-d H-i-s");
-	$mark		=	_RunMagicQuotes($_POST['mark']);
+//获取课程信息
+elseif($do=="getLessonProfile"){
+	If_rabc($action,$do);//检测权限	
 	
-	$sql = "INSERT INTO dj_lesson (name ,detail ,created_at ,mark)
-	VALUES ('{$name}', '{$detail}', '{$created_at}', '{$mark}');";
-	if($db->query($sql)){echo success($msg,"?action=study");}else{echo error($msg);}
-	exit;
+	$id = $_POST['id'];
+	
+	$sql = "SELECT * FROM dj_lesson WHERE id='{$id}' LIMIT 1;";
+	$db->query($sql);
+	$db->fetchRow();
+	
+	$json_arr = array(
+		"id"		=>	$db->getValue("id"),
+		"name"		=>	$db->getValue("name"),
+		"extension"	=>	$db->getValue("extension"),
+		"score"		=>	$db->getValue("score"),
+		"detail"	=>	$db->getValue("detail"),
+		"link"		=>	$db->getValue("link"),
+		"created_at"=>	$db->getValue("created_at"),
+		"mark"		=>	$db->getValue("mark"),
+		);
+	$json_obj = json_encode($json_arr);
+	echo $json_obj;
 }
 
 //进入课程
@@ -80,19 +101,6 @@ elseif($do=="add_study"){
 
 	$sql = "INSERT INTO dj_study (user_id ,lessonid ,date)
 	VALUES ('{$user_id}', '{$lessonid}', '{$date}');";
-	if($db->query($sql)){echo success($msg,"?action=study");}else{echo error($msg);}
-	exit;
-}
-
-//删除课程
-elseif($do=="del_lesson"){
-	If_rabc($action,$do);//检测权限
-	is_admin($action,$do);
-	
-	//参数安全过滤
-	$lessonid	=	_RunMagicQuotes($_GET['lessonid']);
-	
-	$sql = "DELETE FROM dj_lesson WHERE id='{$lessonid}' LIMIT 1;";
 	if($db->query($sql)){echo success($msg,"?action=study");}else{echo error($msg);}
 	exit;
 }
