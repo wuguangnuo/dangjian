@@ -5,7 +5,7 @@
 //====================================================
 
 //make sure all sytax error are reported.
-class mysql
+class mysqliDriver
 {
 	var $host		= "";			//mysql主机名
 	var $user		= "";			//mysql用户名
@@ -13,7 +13,7 @@ class mysql
 	var $dbName		= "";			//mysql数据库名称
 	var $linkID		= 0;			//用来保存连接ID
 	var $queryID	= 0;			//用来保存查询ID
-	var $fetchMode	= MYSQL_ASSOC;	//取记录时的模式
+	var $fetchMode	= MYSQLI_ASSOC;	//取记录时的模式
 	var $queryTimes	= 0;			//保存查询的次数
 	var $errno		= 0;			//mysql出错代号
 	var $error		= "";			//mysql出错信息
@@ -54,18 +54,18 @@ class mysql
 		if ("" == $dbName)
 			$dbName = $this->dbName;
 		//now connect to the database
-		$this->linkID = mysql_connect($host, $user, $pwd);
+		$this->linkID = mysqli_connect($host, $user, $pwd);
 		if (!$this->linkID)
 		{
 			$this->halt();
 			return 0;
 		}
-		if (!mysql_select_db($dbName, $this->linkID))
+		if (!mysqli_select_db($this->linkID, $dbName))
 		{
 			$this->halt();
 			return 0;
 		}
-		mysql_query("set names utf8");
+		mysqli_query($this->linkID, "set names utf8");
 		return $this->linkID;
 	}
 	//======================================
@@ -77,7 +77,7 @@ class mysql
 	function query($sql)
 	{
 		$this->queryTimes++;
-		$this->queryID = mysql_query($sql, $this->linkID);
+		$this->queryID = mysqli_query($this->linkID, $sql);
 		if (!$this->queryID)
 		{	
 			$this->halt();
@@ -88,12 +88,12 @@ class mysql
 	//======================================
 	// 函数: setFetchMode($mode)
 	// 功能: 设置取得记录的模式
-	// 参数: $mode 模式 MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
+	// 参数: $mode 模式 MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH
 	// 返回: 0:失败
 	//======================================
 	function setFetchMode($mode)
 	{
-		if ($mode == MYSQL_ASSOC || $mode == MYSQL_NUM || $mode == MYSQL_BOTH) 
+		if ($mode == MYSQLI_ASSOC || $mode == MYSQLI_NUM || $mode == MYSQLI_BOTH) 
 		{
 			$this->fetchMode = $mode;
 			return 1;
@@ -112,7 +112,7 @@ class mysql
 	//======================================
 	function fetchRow()
 	{
-		$this->record = mysql_fetch_array($this->queryID,$this->fetchMode);
+		$this->record = mysqli_fetch_array($this->queryID, $this->fetchMode);
 		return $this->record;
 	}
 	//======================================
@@ -123,11 +123,11 @@ class mysql
 	function fetchAll()
 	{
 		$arr = array();
-		while($this->record = mysql_fetch_array($this->queryID,$this->fetchMode))
+		while($this->record = mysqli_fetch_array($this->queryID,$this->fetchMode))
 		{
 			$arr[] = $this->record;
 		}
-		mysql_free_result($this->queryID);
+		mysqli_free_result($this->queryID);
 		return $arr;
 	}
 	//======================================
@@ -146,7 +146,7 @@ class mysql
 	//======================================
 	function affectedRows()
 	{
-		return mysql_affected_rows($this->linkID);
+		return mysqli_affected_rows($this->linkID);
 	}
 	//======================================
 	// 函数: recordCount()
@@ -156,7 +156,7 @@ class mysql
 	//======================================
 	function recordCount()
 	{
-		return mysql_num_rows($this->queryID);
+		return mysqli_num_rows($this->queryID);
 	}
 	//======================================
 	// 函数: getQueryTimes()
@@ -203,7 +203,7 @@ class mysql
 	// 参数: 无
 	//======================================
 	function insertID() {
-		return mysql_insert_id();
+		return mysqli_insert_id();
 	}
 	//====================================== 
 	// 函数: halt($err_msg)
@@ -214,8 +214,8 @@ class mysql
 	{
 		if ("" == $err_msg)
 		{
-			$this->errno = mysql_errno();
-			$this->error = mysql_error();
+			$this->errno = mysqli_errno();
+			$this->error = mysqli_error();
 			echo "<b>mysql error:<b><br>";
 			echo $this->errno.":".$this->error."<br>";
 			exit;

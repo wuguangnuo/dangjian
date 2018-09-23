@@ -9,7 +9,8 @@ if(!defined('CORE'))exit("error!");
 date_default_timezone_set('asia/shanghai');
 
 //初始化数据库连接
-$db	=new mysql($cfg["dbhost"],$cfg["dbuser"],$cfg["dbpass"],$cfg["dbname"]);
+$db = new mysqliDriver;
+$db -> mysql($cfg["dbhost"],$cfg["dbuser"],$cfg["dbpass"],$cfg["dbname"]);
 
 //提示信息
 $lang_cn = array(
